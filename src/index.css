@@ -34,3 +34,17 @@ svg{
     stroke: rgb(114, 106, 106);
     stroke-linecap: round;
 }
+
+.winner{
+    background: rgba(255, 255, 255, .8);
+    width: 50vw;
+    height: 50vh;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.winner > button{
+    font-size: 1,25rem;
+}

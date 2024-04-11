@@ -1,7 +1,6 @@
 import { useState } from "react"
 import Square from "./Square"
-
-
+import Winner from "./Winner"
 const EMPTY = "EMPTY"
 const CIRCLE = "CIRCLE"
 const CROSS = "CROSS"
@@ -14,8 +13,52 @@ const App = () => {
             EMPTY, EMPTY, EMPTY,
             EMPTY, EMPTY, EMPTY,
             EMPTY, EMPTY, EMPTY
-        ]
+        ],
+        winner : false
     })
+
+    const resetGame = () =>{
+        setState({
+            player: CIRCLE,
+            positions : [
+                EMPTY, EMPTY, EMPTY,
+                EMPTY, EMPTY, EMPTY,
+                EMPTY, EMPTY, EMPTY
+            ],
+            winner : false
+        })
+    }
+
+    const detectWinner = (myGrid) =>{
+        // if (myGrid[0] == myGrid[1] && myGrid[1] == myGrid[2]){
+        //     if (myGrid[0] == EMPTY)
+        //         return false
+        //     return myGrid[0]
+        // }
+
+        // else if (myGrid[3] == myGrid[4] && myGrid[4] == myGrid[5]){
+        //     if (myGrid[3] == EMPTY)
+        //         return false
+        //     return myGrid[3]
+        // }
+
+        // else if (myGrid[6] == myGrid[7] && myGrid[7] == myGrid[8]){
+        //     if (myGrid[6] == EMPTY)
+        //         return false
+        //     return myGrid[6]
+        // }
+
+        // return false;
+
+        if (myGrid[0] == myGrid[1] && myGrid[1] == myGrid[2] && myGrid[0] != EMPTY)
+        return myGrid[0];
+        if (myGrid[3] == myGrid[4] && myGrid[4] == myGrid[5] && myGrid[3] != EMPTY)
+        return myGrid[3];
+        if (myGrid[6] == myGrid[7] && myGrid[7] == myGrid[8] && myGrid[6] != EMPTY)
+        return myGrid[6];
+
+        return false;
+    }
 
     const takeTurn = (pos) => {
         let positions = [...state.positions]
@@ -23,11 +66,13 @@ const App = () => {
 
         setState({
             player: state.player == CIRCLE? CROSS : CIRCLE,
-            positions
+            positions,
+            winner : detectWinner(positions)
         })
     }
     
     return (
+        <>
         <div className="grid">
             <Square position={0} value={state.positions[0]} take_turn={takeTurn}/>
             <Square position={1} value={state.positions[1]} take_turn={takeTurn}/>
@@ -40,6 +85,10 @@ const App = () => {
             <Square position={8} value={state.positions[8]} take_turn={takeTurn}/>
         </div>
 
+        {state.winner && <Winner value = {state.winner} reset_game={resetGame}/>}
+        
+        </>
     )
+    
 }
 export default App
